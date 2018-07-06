@@ -6,12 +6,42 @@ public class CameraControl : MonoBehaviour
 {
     Camera maincamera;
 
-    public static Transform Target;
     public Transform CameraParent;
+
+    public Vector3 currentLocation;
+
+    Explorer explorer;
+
+    public delegate void LocationChange(Vector3 newLocation);
+    public static event LocationChange OnLocationChange;
+
+    private void OnEnable()
+    {
+        if (this.transform.parent.GetComponent<Explorer>())
+        {
+            explorer = this.transform.parent.GetComponent<Explorer>();
+        }
+        else
+        {
+            Debug.LogError("No Explorer script on parent or no parent");
+        }
+    }
+    private void OnDisable()
+    {
+        
+    }
 
     private void Start()
     {
         maincamera = GetComponent<Camera>();
+
+        if(this.transform.parent.GetComponent<Explorer>())
+        { 
+            explorer = this.transform.parent.GetComponent<Explorer>();
+        }else
+        {
+            Debug.LogError("No Explorer script on parent or no parent");
+        }
     }
 
     void FixedUpdate()
